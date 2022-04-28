@@ -9,8 +9,7 @@ fn main() {
     if args.len() != 2 {
         eprintln!("Error: invalid arguments");
         eprintln!("Usage: sudoku_solver [filename]");
-        eprintln!("The input file should contain 9 characters '0-9', 0 being an empty tile, followed by any single character. Repeat this 9 times for each row.");
-        eprintln!("On Windows, this means the file can not end with CRLF. If you don't know the difference between LF and CRLF, Google it.");
+        eprintln!("The input file should contain 9 characters '0-9', 0 being an empty tile. Repeat this 9 times for each row, with each row on adjacent lines.");
         process::exit(1);
     }
 
