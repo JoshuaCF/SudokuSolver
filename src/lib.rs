@@ -13,6 +13,7 @@ pub struct SudokuBoard {
 }
 impl SudokuBoard {
     pub fn new(board_str: String) -> Self {
+        // TODO: Allow for more flexibility in the input, using iterators (don't forget to change the help msg in main.rs)
         // Using iterator stuff I don't understand here.
         let chars: Vec<char> = board_str.chars().collect();
 
@@ -33,6 +34,7 @@ impl SudokuBoard {
         SudokuBoard {board}
     }
     pub fn clone(&self) -> Self {
+        // TODO: Use the Copy trait
         Self {board: self.board}
     }
     pub fn as_string(&self) -> String {
@@ -72,6 +74,9 @@ impl SudokuBoard {
     }
     
     pub fn get_solvables() -> [[Position; 9]; 27] {
+        // TODO: Cache this value after computing it once. This function returns the same value every time, and it loops a LOT.
+        // It would be most efficient to hardcode this into the program, and I would probably want to do that using macros
+        // This might be a future optimization to make
         let mut solvables: [[Position; 9]; 27] = [[Position {row:0, col:0}; 9]; 27];
 
         // The first 9 arrays will have a row's set of values. This means only the column changes
@@ -127,6 +132,7 @@ impl Branch {
     pub fn new(tile: &TileSuperpos, board_state: &SudokuBoard) -> Self {
         Branch {tile: tile.clone(), cur_option: 0, board_state: board_state.clone()}
     }
+    // TODO: This literally replicates the functionality of an iterator, but is most likely less optimized. Use Rust's builtin iteration functionality
     pub fn has_next(&self) -> bool {
         !(self.cur_option >= self.tile.options.len())
     }
@@ -149,6 +155,7 @@ struct TileSuperpos {
     pub options: Vec<u8>
 }
 impl TileSuperpos {
+    // TODO: Use the Copy trait
     fn clone(&self) -> Self {
         TileSuperpos {row: self.row, col: self.col, options: self.options.to_vec()}
     }
@@ -213,6 +220,7 @@ pub fn solve(board: &mut SudokuBoard) -> Result<&'static str, &'static str> {
 
         // If there's no possible values, start backtracking
         if lowest.options.len() == 0 {
+            // TODO: See if tracking and undoing changes to the board is faster than just cloning an old board state into the variable. Possible optimization, though likely small
             loop {
                 let mut last_branch = match branches.pop() {
                     Some(val) => val,
@@ -278,7 +286,7 @@ fn get_valid_states(board: &SudokuBoard, row: usize, col: usize) -> TileSuperpos
     }
 
     let mut valid_states: Vec<u8> = Vec::new();
-    let mut index: u8 = 0; // I know there's something I can do with iterators here, but I haven't learned about them yet.
+    let mut index: u8 = 0; // TODO: I know there's something I can do with iterators here, but I haven't learned about them yet.
     for state in states {
         if state {
             valid_states.push(index+1);
